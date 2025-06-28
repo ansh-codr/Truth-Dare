@@ -12,6 +12,9 @@ const nextConfig = {
   },
   trailingSlash: true,
   distDir: 'out',
+  experimental: {
+    esmExternals: false,
+  },
 };
 
 module.exports = nextConfig;

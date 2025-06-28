@@ -40,7 +40,7 @@ export default function CreateRoom() {
 
   const handleJoinRoom = () => {
     if (state.room) {
-      router.push(`/join/${state.room.id}`);
+      router.push(`/join/${state.room.id}/`);
     }
   };
 
