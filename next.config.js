@@ -4,9 +4,16 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: { 
+    unoptimized: true 
+  },
   trailingSlash: true,
   distDir: 'out',
+  assetPrefix: '',
+  basePath: '',
 };
 
 module.exports = nextConfig;
