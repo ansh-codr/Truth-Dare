@@ -23,10 +23,21 @@ interface PageProps {
 
 type GamePhase = 'waiting' | 'spinning' | 'choosing' | 'question' | 'completed';
 
+// Generate static params for build
+export async function generateStaticParams() {
+  // Generate some example room IDs for static generation
+  const roomIds = ['DEMO01', 'DEMO02', 'DEMO03', 'SAMPLE', 'TEST01'];
+  
+  return roomIds.map((roomId) => ({
+    roomId: roomId,
+  }));
+}
+
 export default function GameRoom({ params }: PageProps) {
   const [gamePhase, setGamePhase] = useState<GamePhase>('waiting');
   const [showSettings, setShowSettings] = useState(false);
   const [isGeneratingQuestion, setIsGeneratingQuestion] = useState(false);
+  const [roomId, setRoomId] = useState<string>('');
   const { state, dispatch } = useGame();
   const router = useRouter();
 
@@ -34,15 +45,45 @@ export default function GameRoom({ params }: PageProps) {
   const isCurrentPlayer = state.currentUserId === state.room?.currentPlayer;
 
   useEffect(() => {
-    if (!state.room) {
-      router.push('/');
-      return;
+    // Get room ID from URL params
+    const currentRoomId = params?.roomId || '';
+    setRoomId(currentRoomId);
+
+    // If no room in state, create a demo room
+    if (!state.room && currentRoomId) {
+      const demoRoom = {
+        id: currentRoomId,
+        players: [
+          {
+            id: 'demo-player-1',
+            name: 'You',
+            avatar: '💕',
+            isHost: true,
+          },
+          {
+            id: 'demo-player-2',
+            name: 'Friend',
+            avatar: '💖',
+            isHost: false,
+          }
+        ],
+        currentPlayer: 'demo-player-1',
+        gameStarted: true,
+        currentQuestion: null,
+        questionType: null as 'truth' | 'dare' | null,
+        theme: 'flirty' as const,
+      };
+
+      dispatch({
+        type: 'JOIN_ROOM',
+        payload: { room: demoRoom, playerId: 'demo-player-1' }
+      });
     }
 
-    if (state.room.gameStarted && state.room.currentPlayer) {
+    if (state.room?.gameStarted && state.room?.currentPlayer) {
       setGamePhase('spinning');
     }
-  }, [state.room, router]);
+  }, [state.room, params, dispatch]);
 
   const handlePlayerSelected = (playerId: string) => {
     dispatch({ type: 'SET_CURRENT_PLAYER', payload: playerId });
@@ -86,10 +127,19 @@ export default function GameRoom({ params }: PageProps) {
     router.push('/');
   };
 
+  // Show loading if no room ID yet
+  if (!roomId) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-white text-xl">Loading game...</div>
+      </div>
+    );
+  }
+
   if (!state.room) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+        <div className="text-white text-xl">Setting up game room...</div>
       </div>
     );
   }
@@ -112,7 +162,7 @@ export default function GameRoom({ params }: PageProps) {
 
         <GlassCard className="px-4 py-2">
           <p className="text-white/80 text-sm">
-            Room: <span className="text-loveGlow font-mono">{params.roomId}</span>
+            Room: <span className="text-loveGlow font-mono">{roomId}</span>
           </p>
         </GlassCard>
 

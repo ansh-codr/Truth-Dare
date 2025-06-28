@@ -19,30 +19,45 @@ interface PageProps {
   };
 }
 
+// Generate static params for build
+export async function generateStaticParams() {
+  // Generate some example room IDs for static generation
+  const roomIds = ['DEMO01', 'DEMO02', 'DEMO03', 'SAMPLE', 'TEST01'];
+  
+  return roomIds.map((roomId) => ({
+    roomId: roomId,
+  }));
+}
+
 export default function JoinRoom({ params }: PageProps) {
   const [playerName, setPlayerName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('💖');
   const [hasJoined, setHasJoined] = useState(false);
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [roomId, setRoomId] = useState<string>('');
   const { state, dispatch } = useGame();
   const router = useRouter();
 
   useEffect(() => {
-    // Simulate checking if room exists and user is already in it
-    if (state.room?.id === params.roomId) {
+    // Get room ID from URL params or current state
+    const currentRoomId = params?.roomId || state.room?.id || '';
+    setRoomId(currentRoomId);
+    
+    // Check if user is already in this room
+    if (state.room?.id === currentRoomId) {
       setHasJoined(true);
     }
-  }, [state.room, params.roomId]);
+  }, [state.room, params]);
 
   const handleJoinRoom = () => {
-    if (!playerName.trim()) return;
+    if (!playerName.trim() || !roomId) return;
 
     const playerId = Math.random().toString(36).substring(2, 15);
     
-    // Simulate joining an existing room or create a mock room
-    if (!state.room || state.room.id !== params.roomId) {
+    // Create or join room
+    if (!state.room || state.room.id !== roomId) {
       const mockRoom = {
-        id: params.roomId,
+        id: roomId,
         players: [
           {
             id: 'host-id',
@@ -79,11 +94,24 @@ export default function JoinRoom({ params }: PageProps) {
 
   const handleStartGame = () => {
     dispatch({ type: 'START_GAME' });
-    router.push(`/game/${params.roomId}/`);
+    router.push(`/game/${roomId}/`);
   };
 
   const isHost = state.room?.players.find(p => p.id === state.currentUserId)?.isHost || false;
   const canStartGame = state.room && state.room.players.length >= 2;
+
+  // Show loading if no room ID yet
+  if (!roomId) {
+    return (
+      <div className="min-h-screen relative flex items-center justify-center p-4">
+        <AnimatedBackground />
+        <GlassCard className="p-8 text-center">
+          <div className="text-4xl mb-4">🎮</div>
+          <p className="text-white">Loading room...</p>
+        </GlassCard>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen relative flex items-center justify-center p-4">
@@ -116,7 +144,7 @@ export default function JoinRoom({ params }: PageProps) {
                   Join Game Room
                 </h1>
                 <p className="text-white/80">
-                  Room ID: <span className="font-mono text-loveGlow">{params.roomId}</span>
+                  Room ID: <span className="font-mono text-loveGlow">{roomId}</span>
                 </p>
               </div>
 
@@ -183,7 +211,7 @@ export default function JoinRoom({ params }: PageProps) {
                 <Users className="text-loveGlow" size={32} />
               </div>
               <p className="text-white/80">
-                Room: <span className="font-mono text-loveGlow">{params.roomId}</span>
+                Room: <span className="font-mono text-loveGlow">{roomId}</span>
               </p>
               <p className="text-white/60 text-sm mt-2">
                 {state.room?.players.length || 0}/10 players • Waiting for host to start
@@ -281,7 +309,7 @@ export default function JoinRoom({ params }: PageProps) {
       <InviteModal
         isOpen={showInviteModal}
         onClose={() => setShowInviteModal(false)}
-        roomId={params.roomId}
+        roomId={roomId}
       />
     </div>
   );
