@@ -17,6 +17,9 @@ const nextConfig = {
   experimental: {
     esmExternals: false,
   },
+  // Ensure proper static generation
+  generateEtags: false,
+  poweredByHeader: false,
 };
 
 module.exports = nextConfig;
