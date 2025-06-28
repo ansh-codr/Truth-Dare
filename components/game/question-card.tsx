@@ -55,7 +55,7 @@ export function QuestionCard({ question, type, playerName, onNext, isAIGenerated
         </div>
         
         <h3 className="text-2xl font-bold text-white mb-6">
-          {playerName}, here's your {type}:
+          {playerName}, here&apos;s your {type}:
         </h3>
         
         <motion.div

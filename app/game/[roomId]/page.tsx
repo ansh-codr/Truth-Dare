@@ -49,25 +49,27 @@ export default function GameRoom({ params }: PageProps) {
     setGamePhase('choosing');
   };
 
-  const handleTruthDareChoice = async (choice: 'truth' | 'dare') => {
-    if (!state.room) return;
+  const handleTruthDareChoice = (choice: 'truth' | 'dare') => {
+    if (!state.room || isGeneratingQuestion) return;
     
     setIsGeneratingQuestion(true);
     
-    try {
-      // Generate dynamic question
-      const question = generateDynamicQuestion(choice, state.room.theme);
-      
-      dispatch({ 
-        type: 'SET_QUESTION', 
-        payload: { question: question.text, type: choice }
-      });
-      setGamePhase('question');
-    } catch (error) {
-      console.error('Error generating question:', error);
-    } finally {
-      setIsGeneratingQuestion(false);
-    }
+    // Simulate a brief delay for better UX
+    setTimeout(() => {
+      try {
+        const question = generateDynamicQuestion(choice, state.room!.theme);
+        
+        dispatch({ 
+          type: 'SET_QUESTION', 
+          payload: { question: question.text, type: choice }
+        });
+        setGamePhase('question');
+      } catch (error) {
+        console.error('Error generating question:', error);
+      } finally {
+        setIsGeneratingQuestion(false);
+      }
+    }, 1000);
   };
 
   const handleNextTurn = () => {
@@ -233,9 +235,9 @@ export default function GameRoom({ params }: PageProps) {
             <div className="flex items-center space-x-2">
               <PlayerAvatar player={currentPlayer} size="sm" />
               <div className="text-white/80 text-sm">
-                <p className="font-semibold">{currentPlayer.name}'s turn</p>
+                <p className="font-semibold">{currentPlayer.name}&apos;s turn</p>
                 {isCurrentPlayer && (
-                  <p className="text-loveGlow">That's you!</p>
+                  <p className="text-loveGlow">That&apos;s you!</p>
                 )}
               </div>
             </div>
