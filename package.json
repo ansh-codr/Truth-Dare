@@ -3,19 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": "18.x",
+    "npm": "8.x"
   },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "export": "next build",
     "clean": "rm -rf .next out node_modules/.cache"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.0",
     "@radix-ui/react-accordion": "^1.2.0",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-aspect-ratio": "^1.1.0",
@@ -57,7 +55,7 @@
     "framer-motion": "^11.0.0",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.446.0",
-    "next": "^13.5.11",
+    "next": "13.5.1",
     "next-themes": "^0.3.0",
     "postcss": "8.4.30",
     "react": "18.2.0",
@@ -73,17 +71,5 @@
     "typescript": "5.2.2",
     "vaul": "^0.9.9",
     "zod": "^3.23.8"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
