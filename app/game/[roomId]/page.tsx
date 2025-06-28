@@ -23,10 +23,6 @@ interface PageProps {
 
 type GamePhase = 'waiting' | 'spinning' | 'choosing' | 'question' | 'completed';
 
-export async function generateStaticParams() {
-  return [];
-}
-
 export default function GameRoom({ params }: PageProps) {
   const [gamePhase, setGamePhase] = useState<GamePhase>('waiting');
   const [showSettings, setShowSettings] = useState(false);
