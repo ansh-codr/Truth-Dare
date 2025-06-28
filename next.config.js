@@ -14,6 +14,13 @@ const nextConfig = {
   distDir: 'out',
   assetPrefix: '',
   basePath: '',
+  swcMinify: true,
+  experimental: {
+    optimizeCss: true,
+  },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
 };
 
 module.exports = nextConfig;
