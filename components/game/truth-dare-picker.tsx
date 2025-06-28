@@ -37,7 +37,7 @@ export function TruthDarePicker({ onChoice, playerName, isGenerating = false }: 
           What will it be?
         </p>
         <p className="text-loveGlow text-sm">
-          🤖 AI will generate a unique question just for you!
+          🎯 A unique question will be generated just for you!
         </p>
       </GlassCard>
 
@@ -90,12 +90,12 @@ export function TruthDarePicker({ onChoice, playerName, isGenerating = false }: 
           className="text-center"
         >
           <div className="text-4xl mb-2">
-            {isGenerating ? '🤖' : selectedChoice === 'truth' ? '💭' : '🚀'}
+            {isGenerating ? '🎯' : selectedChoice === 'truth' ? '💭' : '🚀'}
           </div>
           <p className="text-loveGlow font-semibold">
             {isGenerating 
-              ? 'AI is generating your question...' 
-              : `Generating your ${selectedChoice}...`
+              ? 'Generating your question...' 
+              : `Preparing your ${selectedChoice}...`
             }
           </p>
         </motion.div>

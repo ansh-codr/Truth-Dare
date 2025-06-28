@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import Confetti from 'react-confetti';
 import { GlassCard } from '@/components/ui/glass-card';
 import { NeonButton } from '@/components/ui/neon-button';
 
@@ -22,21 +21,11 @@ export function QuestionCard({ question, type, playerName, onNext, isAIGenerated
     setTimeout(() => {
       setShowConfetti(false);
       onNext();
-    }, 3000);
+    }, 2000);
   };
 
   return (
-    <>
-      {showConfetti && (
-        <Confetti
-          width={window.innerWidth}
-          height={window.innerHeight}
-          recycle={false}
-          numberOfPieces={100}
-          colors={['#F6D0E3', '#B388EB', '#A0E7E5', '#ffafcc']}
-        />
-      )}
-      
+    <>      
       <motion.div
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -91,15 +80,15 @@ export function QuestionCard({ question, type, playerName, onNext, isAIGenerated
             </NeonButton>
           </div>
 
-          {isAIGenerated && (
-            <motion.p
+          {showConfetti && (
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-              className="text-white/60 text-sm mt-4"
+              className="mt-4"
             >
-              This question was uniquely crafted by AI just for this moment! 🎯
-            </motion.p>
+              <div className="text-4xl">🎉</div>
+              <p className="text-loveGlow font-semibold">Great job!</p>
+            </motion.div>
           )}
         </GlassCard>
 

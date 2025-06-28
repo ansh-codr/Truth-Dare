@@ -13,7 +13,7 @@ import { TruthDarePicker } from '@/components/game/truth-dare-picker';
 import { QuestionCard } from '@/components/game/question-card';
 import { ThemeSelector } from '@/components/game/theme-selector';
 import { useGame } from '@/lib/game-context';
-import { generateAIQuestion } from '@/lib/questions';
+import { generateDynamicQuestion } from '@/lib/questions';
 
 interface PageProps {
   params: {
@@ -55,8 +55,8 @@ export default function GameRoom({ params }: PageProps) {
     setIsGeneratingQuestion(true);
     
     try {
-      // Generate AI-powered question
-      const question = await generateAIQuestion(choice, state.room.theme);
+      // Generate dynamic question
+      const question = generateDynamicQuestion(choice, state.room.theme);
       
       dispatch({ 
         type: 'SET_QUESTION', 
@@ -65,7 +65,6 @@ export default function GameRoom({ params }: PageProps) {
       setGamePhase('question');
     } catch (error) {
       console.error('Error generating question:', error);
-      // Fallback will be handled by the generateAIQuestion function
     } finally {
       setIsGeneratingQuestion(false);
     }
@@ -142,7 +141,7 @@ export default function GameRoom({ params }: PageProps) {
               onThemeChange={handleThemeChange}
             />
             <p className="text-white/60 text-sm text-center mt-4">
-              🤖 Questions are now AI-generated based on your theme choice!
+              🎯 Questions are dynamically generated based on your theme choice!
             </p>
           </GlassCard>
         </motion.div>
@@ -191,7 +190,7 @@ export default function GameRoom({ params }: PageProps) {
                 Game Starting...
               </h2>
               <p className="text-white/80 text-lg">
-                Get ready for an amazing AI-powered Truth & Dare experience!
+                Get ready for an amazing Truth & Dare experience!
               </p>
             </GlassCard>
           </motion.div>
@@ -218,7 +217,7 @@ export default function GameRoom({ params }: PageProps) {
             type={state.room.questionType}
             playerName={currentPlayer.name}
             onNext={handleNextTurn}
-            isAIGenerated={true}
+            isAIGenerated={false}
           />
         )}
       </div>
@@ -244,7 +243,7 @@ export default function GameRoom({ params }: PageProps) {
         </motion.div>
       )}
 
-      {/* AI Generation Indicator */}
+      {/* Question Generation Indicator */}
       {isGeneratingQuestion && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -257,10 +256,10 @@ export default function GameRoom({ params }: PageProps) {
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               className="text-4xl mb-4"
             >
-              🤖
+              🎯
             </motion.div>
             <p className="text-white font-semibold">
-              AI is crafting your perfect question...
+              Crafting your perfect question...
             </p>
           </GlassCard>
         </motion.div>
