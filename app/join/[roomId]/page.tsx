@@ -19,16 +19,6 @@ interface PageProps {
   };
 }
 
-// Required for static export with dynamic routes
-export async function generateStaticParams() {
-  // Generate some example room IDs for static generation
-  const roomIds = ['DEMO01', 'DEMO02', 'DEMO03', 'SAMPLE', 'TEST01'];
-  
-  return roomIds.map((roomId) => ({
-    roomId: roomId,
-  }));
-}
-
 export default function JoinRoom({ params }: PageProps) {
   const [playerName, setPlayerName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('💖');
