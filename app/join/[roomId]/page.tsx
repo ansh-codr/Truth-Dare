@@ -19,16 +19,6 @@ interface PageProps {
   };
 }
 
-// Generate static params for build
-export async function generateStaticParams() {
-  // Generate some example room IDs for static generation
-  const roomIds = ['DEMO01', 'DEMO02', 'DEMO03', 'SAMPLE', 'TEST01'];
-  
-  return roomIds.map((roomId) => ({
-    roomId: roomId,
-  }));
-}
-
 export default function JoinRoom({ params }: PageProps) {
   const [playerName, setPlayerName] = useState('');
   const [selectedAvatar, setSelectedAvatar] = useState('💖');
@@ -39,8 +29,8 @@ export default function JoinRoom({ params }: PageProps) {
   const router = useRouter();
 
   useEffect(() => {
-    // Get room ID from URL params or current state
-    const currentRoomId = params?.roomId || state.room?.id || '';
+    // Get room ID from URL params
+    const currentRoomId = params?.roomId || '';
     setRoomId(currentRoomId);
     
     // Check if user is already in this room

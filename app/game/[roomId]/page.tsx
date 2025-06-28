@@ -23,16 +23,6 @@ interface PageProps {
 
 type GamePhase = 'waiting' | 'spinning' | 'choosing' | 'question' | 'completed';
 
-// Generate static params for build
-export async function generateStaticParams() {
-  // Generate some example room IDs for static generation
-  const roomIds = ['DEMO01', 'DEMO02', 'DEMO03', 'SAMPLE', 'TEST01'];
-  
-  return roomIds.map((roomId) => ({
-    roomId: roomId,
-  }));
-}
-
 export default function GameRoom({ params }: PageProps) {
   const [gamePhase, setGamePhase] = useState<GamePhase>('waiting');
   const [showSettings, setShowSettings] = useState(false);

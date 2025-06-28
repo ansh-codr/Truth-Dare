@@ -12,13 +12,6 @@ const nextConfig = {
   },
   trailingSlash: true,
   distDir: 'out',
-  experimental: {
-    esmExternals: false,
-  },
-  // Generate static params for dynamic routes
-  generateBuildId: async () => {
-    return 'truth-dare-game'
-  },
 };
 
 module.exports = nextConfig;
