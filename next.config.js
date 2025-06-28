@@ -21,6 +21,10 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  // Ensure all dynamic routes are properly handled
+  generateBuildId: async () => {
+    return 'truth-dare-game-build'
+  },
 };
 
 module.exports = nextConfig;
